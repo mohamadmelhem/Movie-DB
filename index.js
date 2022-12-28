@@ -82,9 +82,9 @@ app.get("/movies/update", (req, res) => {
     res.send(`update`);
 });
 
-app.get("/movies/delete", (req, res) => {
-    res.send(`delete`);
-});
+// app.get("/movies/delete", (req, res) => {
+//     res.send(`delete`);
+// });
 
 app.get('/movies/add/title/:title/&year/:year/&rating/:rating', (req, res) => {
     if (req.params.title != " " && req.params.year >= 1000 ) {
@@ -100,6 +100,14 @@ app.get('/movies/add/title/:title/&year/:year/&rating/:rating', (req, res) => {
         res.status(403).send({ status: 403, error: true, message: 'you cannot create a movie without providing a title and a year' })
     }
 });
+app.get('/movies/delete/:Id' , function(req,res){
+    if (req.params.Id >= 0 && req.params.Id <= movies.length) {
+        movies.splice(req.params.Id, 1);
+        res.send(movies);
+    } else {
+        res.status(404).send({ status: 404, error: true, message: `The movie ${req.params.Id} does not exist` })
+    }
+})
 
 
 app.listen(PORT, () => console.log(`server in now listening on port ${PORT}`))
