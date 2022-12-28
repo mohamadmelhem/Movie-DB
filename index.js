@@ -1,6 +1,6 @@
 const express = require('express');
 
-const PORT=3000;
+const PORT=8000;
 
 const app = express();
 const movies = [
@@ -77,19 +77,28 @@ app.get("/movies/read/by-title", (req, res) => {
     });
 });
 
-app.get('/movies/read/id/:ID', (req, res) => {
-    if (req.params.ID !=" " && req.params.ID<movies.length ) {
-        res.status(200).send({ status: 200, data: movies[req.params.ID] })
-    } else {
-        res.status(404).send({ status: 404, error: true, message: `the movie ${req.params.ID} does not exist` })
-    }
-});
+
 app.get("/movies/update", (req, res) => {
     res.send(`update`);
 });
 
 app.get("/movies/delete", (req, res) => {
     res.send(`delete`);
+});
+
+app.get('/movies/add/title/:title/&year/:year/&rating/:rating', (req, res) => {
+    if (req.params.title != " " && req.params.year >= 1000 ) {
+        if (req.params.rating == " ") {
+            req.params.rating = 4;
+            movies.push(req.params);
+            res.send(movies);
+        } else {
+            movies.push(req.params);
+            res.send(movies);
+        }
+    } else {
+        res.status(403).send({ status: 403, error: true, message: 'you cannot create a movie without providing a title and a year' })
+    }
 });
 
 
