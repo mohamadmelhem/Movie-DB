@@ -86,7 +86,7 @@ app.get("/movies/read/by-title", (req, res) => {
 //     res.send(`delete`);
 // });
 
-app.get('/movies/add/title/:title/&year/:year/&rating/:rating', (req, res) => {
+app.post('/movies/add/title/:title/&year/:year/&rating/:rating', (req, res) => {
     if (req.params.title != " " && req.params.year >= 1000 ) {
         if (req.params.rating == " ") {
             req.params.rating = 4;
@@ -100,7 +100,7 @@ app.get('/movies/add/title/:title/&year/:year/&rating/:rating', (req, res) => {
         res.status(403).send({ status: 403, error: true, message: 'you cannot create a movie without providing a title and a year' })
     }
 });
-app.get('/movies/delete/:Id' , function(req,res){
+app.delete('/movies/delete/:Id' , function(req,res){
     if (req.params.Id >= 0 && req.params.Id <= movies.length) {
         movies.splice(req.params.Id, 1);
         res.send(movies);
@@ -108,7 +108,7 @@ app.get('/movies/delete/:Id' , function(req,res){
         res.status(404).send({ status: 404, error: true, message: `The movie ${req.params.Id} does not exist` })
     }
 })
-app.get("/movies/update/:id", (req, res) => {
+app.put("/movies/update/:id", (req, res) => {
     const id = parseInt(req.params.id)
     if (id > movies.length) {
         res.status(404).json({ status: 404, error: true, message: `the movie ${id} does not exist` })
